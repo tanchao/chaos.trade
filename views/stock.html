@@ -1,0 +1,76 @@
+$def with (jd)
+<div id="stocks">
+    <h3>Stock page</h3>
+    <div id="placeholder" class="chart" ></div>
+</div>
+
+<div id="message">
+    <h5>Message Section</h5>
+    <p>$jd</p>
+</div>
+
+<script type="text/javascript">
+jQuery(function() {
+
+var options = {
+            lines: {
+                show: true
+            },
+            points: {
+                show: true
+            },
+            xaxis: {
+                tickDecimals: 0,
+                tickSize: 1
+            }
+        };
+
+var data_pool = [[-0.5,0.1],[-0.1,0.2],[2,3],[3,4]];
+var placeholder = jQuery("#placeholder");
+jQuery.plot(placeholder, data_pool, options);
+
+function onDataReceived(data) {
+    if (data.status==200) {
+        d = data.content[0];
+        data_pool.push(d);
+        alert("comeon");
+        //jQuery.plot(placeholder, data_pool)
+    } else {
+        alert("sigh");
+    }
+}
+
+jQuery.ajax({
+    url: "http://localhost:1234/stock/ema5/GOOG",
+    method: "GET",
+    dataType: "json",
+    success: onDataReceived
+});
+
+var previousPoint = null;
+placeholder.bind("plothover", function (event, pos, item) {
+    $("#x").text(pos.x.toFixed(2));
+    $("#y").text(pos.y.toFixed(2));
+
+    if (item) {
+        if (previousPoint != item.dataIndex) {
+            previousPoint = item.dataIndex;
+
+            $("#tooltip").remove();
+            //var x = item.datapoint[0].toFixed(2),
+            //    y = item.datapoint[1].toFixed(2);
+            var x = item.datapoint[0],
+                y = item.datapoint[1];
+            var d = new Date(x);
+            var x_date = String(d.getFullYear())+"年"+String(d.getMonth()+1)+"月"+String(d.getDate())+"日";
+
+            showTooltip(item.pageX, item.pageY, x_date + item.series.label + ": " + y.toFixed(2));
+        }
+    }else {
+        $("#tooltip").remove();
+        previousPoint = null;
+    }
+});
+
+});
+</script>

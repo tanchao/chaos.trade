@@ -1,0 +1,270 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb" lang="zh-cn">
+<head>
+    <title>智足者富 - zhizuzhefu.com</title>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <link rel="icon" type="image/x-icon" href="http://zhizuzhefu.com/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="http://zhizuzhefu.com/favicon.ico" />
+    <link rel="stylesheet" href="http://zhizuzhefu.com/static/css/zhizuzhefu.css" type="text/css" />
+    <script type="text/javascript" src="http://zhizuzhefu.com/static/js/tongji_zhizuzhefu.js"></script>
+    <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=848142852" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <div id="logo">
+                <a href="http://zhizuzhefu.com" title="智足者富">
+                    <img src="http://zhizuzhefu.com/static/img/zhizuzhefu.png" width="186" height="36" alt="智足者富 zhizuzhefu.com" />
+                </a>
+            </div>
+            <div id="search">
+                <form method="GET" action="http://zhizuzhefu.com">
+                    <fieldset>
+                        <input type="text" name="search_keywords" class="searchtext" x-webkit-speech />
+                        &nbsp;
+                        <input type="submit" value="股票搜索" class="searchsubmit" />
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div id="menu">
+            <ul>
+                <li>
+                    <a href="http://zhizuzhefu.com">首页</a>
+                </li>
+                <li class="active">
+                    <a href="http://zhizuzhefu.com/randomone">个股</a>
+                </li>
+                <li>
+                    <a href="http://zhizuzhefu.com/rankingup">涨幅榜</a>
+                </li>
+                <li>
+                    <a href="http://zhizuzhefu.com/rankingdown">跌幅榜</a>
+                </li>
+                <li>
+                    <a href="http://zhizuzhefu.com/userselected">自选股</a>
+                </li>
+            </ul>
+        </div>
+        <div id="content">
+            <h1>
+                <a href="http://zhizuzhefu.com" title="智足者富">智足者富 zhizuzhefu.com</a>
+            </h1>
+            <div>
+                <h3>
+                    股票信息: 开元投资 | sz000516 | 股价: 4.19元 | 涨跌幅:
+                    <span style="color:Red;">1.21%</span>
+                    | 数据更新日期: 2013-08-16
+                </h3>
+                <h3 id="chart_rt"></h3>
+                <br />
+                <div id="placeholder" class="chart_avg" title="开元投资 均线图"></div>
+                <!--[if lte IE 8]>
+                <script type="text/javascript" src="http://zhizuzhefu.com/static/js/flot/excanvas.min.js"></script>
+                <![endif]-->
+                <script type="text/javascript" src="http://zhizuzhefu.com/static/js/jquery.min.js"></script>
+                <script type="text/javascript" src="http://zhizuzhefu.com/static/js/flot/jquery.flot.js"></script>
+                <script type="text/javascript">
+function realtime_hq(){
+    $.ajax({
+        url: "http://hq.sinajs.cn/list=sz000516",
+        method: 'GET',
+        dataType: "script",
+        scriptCharset: "gb2312",
+        cache: true,
+        success: function(data){
+            var hq = hq_str_sz000516.split(",");
+            var rt_hq = '';
+            if(Number(hq[3])>Number(hq[2])){
+                var rt_hq = '<span style="color:Red;">'+hq[3]+'&nbsp;'+String(((Number(hq[3])-Number(hq[2]))*100/Number(hq[2])).toFixed(2))+'%</span>';
+            }else if(Number(hq[3])<Number(hq[2])){
+                var rt_hq = '<span style="color:Lime;">'+hq[3]+'&nbsp;'+String(((Number(hq[3])-Number(hq[2]))*100/Number(hq[2])).toFixed(2))+'%</span>';
+            }else{
+                var rt_hq = '<span style="color:Black;">'+hq[3]+'&nbsp;'+String(((Number(hq[3])-Number(hq[2]))*100/Number(hq[2])).toFixed(2))+'%</span>';
+            }
+            var html_src = '实时行情: '+rt_hq+" | 今开: "+hq[1]+" | 昨收: "+hq[2]+" | 最高: "+hq[4]+" | 最低: "+hq[5]+" | 量: "+String((Number(hq[8])/100).toFixed(0))+"手 | 额: "+String((Number(hq[9])/10000).toFixed(2))+"万元";
+            $("#chart_rt").html(html_src);
+            setTimeout(realtime_hq,5000);
+        }
+    });
+}
+
+$(function () {
+
+realtime_hq();
+
+var options = {
+    series: {
+        lines: { show: true, lineWidth: 1 },
+        points: { show: false, radius: 1 }
+    },
+    grid: { hoverable: true, clickable: true },
+    xaxes: [ { mode: "time" } ],
+    legend: { position: "sw" }
+};
+
+var data_pool = [];
+var placeholder = $("#placeholder");
+$.plot(placeholder, data_pool, options);
+
+function showTooltip(x, y, contents) {
+    $('<div id="tooltip">' + contents + '</div>').css( {
+        position: 'absolute',
+        display: 'none',
+        top: y + 5,
+        left: x + 5,
+        border: '1px solid #fddfdd',
+        padding: '2px',
+        'background-color': '#feefee',
+        opacity: 0.80
+    }).appendTo("body").fadeIn(200);
+}
+
+function onDataReceived(data) {
+    if(data.status==200){
+        d = data.content[0];
+        // UTC timestamp
+        for(var i = 0; i < d.data.length; ++i){
+            d.data[i][0] += 8 * 60 * 60 * 1000;
+        }
+        data_pool.push(d);
+        $.plot(placeholder, data_pool, options );
+    }else{
+        alert(data.content);
+    }
+}
+
+$.ajax({
+    url: "http://zhizuzhefu.com/json/daily/closing/sz000516",
+    method: 'GET',
+    dataType: 'json',
+    success: onDataReceived
+});
+
+$.ajax({
+    url: "http://zhizuzhefu.com/json/ema5/closing/sz000516",
+    method: 'GET',
+    dataType: 'json',
+    success: onDataReceived
+});
+
+$.ajax({
+    url: "http://zhizuzhefu.com/json/ema10/closing/sz000516",
+    method: 'GET',
+    dataType: 'json',
+    success: onDataReceived
+});
+
+$.ajax({
+    url: "http://zhizuzhefu.com/json/ema20/closing/sz000516",
+    method: 'GET',
+    dataType: 'json',
+    success: onDataReceived
+});
+
+$.ajax({
+    url: "http://zhizuzhefu.com/json/ema30/closing/sz000516",
+    method: 'GET',
+    dataType: 'json',
+    success: onDataReceived
+});
+
+$.ajax({
+    url: "http://zhizuzhefu.com/json/ema60/closing/sz000516",
+    method: 'GET',
+    dataType: 'json',
+    success: onDataReceived
+});
+
+$.ajax({
+    url: "http://zhizuzhefu.com/json/ema120/closing/sz000516",
+    method: 'GET',
+    dataType: 'json',
+    success: onDataReceived
+});
+
+var previousPoint = null;
+placeholder.bind("plothover", function (event, pos, item) {
+    $("#x").text(pos.x.toFixed(2));
+    $("#y").text(pos.y.toFixed(2));
+
+    if (item) {
+        if (previousPoint != item.dataIndex) {
+            previousPoint = item.dataIndex;
+
+            $("#tooltip").remove();
+            //var x = item.datapoint[0].toFixed(2),
+            //    y = item.datapoint[1].toFixed(2);
+            var x = item.datapoint[0],
+                y = item.datapoint[1];
+            var d = new Date(x);
+            var x_date = String(d.getFullYear())+"年"+String(d.getMonth()+1)+"月"+String(d.getDate())+"日";
+
+            showTooltip(item.pageX, item.pageY, x_date + item.series.label + ": " + y.toFixed(2));
+        }
+    }else {
+        $("#tooltip").remove();
+        previousPoint = null;
+    }
+});
+
+/*
+placeholder.bind("plotclick", function (event, pos, item) {
+    if (item) {
+        //$("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".");
+        plot.highlight(item.series, item.datapoint);
+    }
+});
+*/
+
+});
+</script>
+                <div class="indexes">
+                    <br />
+                    <img src="http://image.sinajs.cn/newchart/small/nsh000001.gif?_0.0629028835382" alt="智足者富 上证综指" title="上证综指" />
+                    <img src="http://image.sinajs.cn/newchart/small/nsz399001.gif?_0.0629028835382" alt="智足者富 深证成指" title="深证成指" />
+                    <img src="http://image.sinajs.cn/newchart/small/nsz399006.gif?_0.0629028835382" alt="智足者富 创业板指" title="创业板指" />
+                    <br />
+                    <br />
+                    <img src="http://img1.quotes.ws.126.net/hkchart/stimechart/HSI.png?_0.0629028835382" alt="智足者富 恒生指数" title="恒生指数" />
+                    <img src="http://img2.quotes.ws.126.net/usstock/smalltimechart1/DOWJONES.png?_0.0629028835382" alt="智足者富 道琼斯" title="道琼斯" />
+                    <img src="http://img2.quotes.ws.126.net/usstock/smalltimechart1/NASDAQ.png?_0.0629028835382" alt="智足者富 纳斯达克" title="纳斯达克" />
+                    <img src="http://img2.quotes.ws.126.net/usstock/smalltimechart1/SP500.png?_0.0629028835382" alt="智足者富 标准普尔" title="标准普尔" />
+                </div>
+                <p class="right">
+                    <a href="#header">
+                        向上
+                        <img src="http://zhizuzhefu.com/static/img/arrow.up.gif" width="7" height="8" alt="向上" />
+                    </a>
+                </p>
+            </div>
+        </div>
+        <div id="footer">
+            <ul>
+                <li>
+                    <a href="http://chenpeng.info" target="_blank" title="陈鹏个人博客">陈鹏个人博客</a>
+                </li>
+                <!--<li>
+                <a href="http://blog.chenpeng.info" target="_blank" title="伪面小姐">伪面小姐</a>
+            </li>
+            -->
+            <li>
+                <a href="http://meigoumei.com" target="_blank" title="美购美">美购美</a>
+            </li>
+            <li>
+                <a href="http://izhuye.chenpeng.info" target="_blank" title="爱主页">爱主页</a>
+            </li>
+        </ul>
+        <p>
+            &copy; 2013 zhizuzhefu.com 智足者富 |
+            <a href="http://www.miitbeian.gov.cn" title="智足者富网站备案信息">京ICP备13018428号-1</a>
+            |
+            <a href="http://sae.sina.com.cn" target="_blank">Sina App Engine</a>
+            |
+            <wb:share-button appkey="848142852" relateuid="1842518727" ></wb:share-button>
+        </p>
+    </div>
+</div>
+</body>
+</html>

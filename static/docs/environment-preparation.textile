@@ -1,0 +1,17 @@
+1. Install Python
+Mac own python 2.7.5, enough for me.
+
+2. Install Web.py
+Download gz source file from http://webpy.org/install;
+> http://webpy.org/static/web.py-0.37.tar.gz
+> tar xzvf web.py-0.37.tar.gz
+> cd web.py-0.37
+> sudo python setup install
+
+3. Install PostgreSQL
+* on Mac, download and install with GUI. It will install to /Library/PostgreSQL/9.3/
+* need add bin dir into PATH:
+PATH=${PATH}:/Library/PostgreSQL/9.3/bin/
+* need add symlink for execute path:
+tanchao@/Library/PostgreSQL/9.3/bin\> sudo ln -s /Library/PostgreSQL/9.3/lib/libssl.1.0.0.dylib /usr/lib
+tanchao@/Library/PostgreSQL/9.3/bin\> sudo ln -s /Library/PostgreSQL/9.3/lib/libcrypto.1.0.0.dylib /usr/lib
