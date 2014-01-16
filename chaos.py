@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # (c) tanchao <chaos.tc@gmail.com>
 
@@ -61,4 +62,5 @@ class index:
 app = web.application(urls, globals())
 
 if __name__ == '__main__':
+    web.wsgi.runwsgi = lambda func, addr=None: web.wsgi.runfcgi(func, addr)
     app.run()
