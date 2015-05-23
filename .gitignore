@@ -1,5 +1,10 @@
 *.py[cod]
 
+# logs
+log
+log/*
+nohup.out
+
 # vim tmp file
 *.swp
 
