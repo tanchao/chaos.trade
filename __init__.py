@@ -31,4 +31,9 @@ init_env = '''
         http://jingyan.baidu.com/article/acf728fd10c3d6f8e510a3ef.html
         http://www.360doc.com/content/15/0516/11/14900341_470864335.shtml
 	http://www.cnblogs.com/bjzhanghao/archive/2011/07/24/2115350.html
+    6. install web server
+        yum install nginx
+        sudo service nginx start
+        sudo yum install gcc
+        sudo CC=gcc pip install uwsgi
 '''
