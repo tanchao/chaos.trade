@@ -5,6 +5,14 @@ import os
 cur_path = os.getcwd()
 sys.path.append(cur_path)
 
+
+start_env = '''
+    1. mysqld should be start by sys
+    2. ngnix should be start by sys
+    3. need manually start uwsgi: . uwsgi_chaos.sh
+       note socket 127.0.0.1:9527 is takend by it
+'''
+
 init_env = '''
     1. install git:
         sudo yum install git

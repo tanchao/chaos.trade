@@ -1,0 +1,10 @@
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+[uWSGI] getting INI configuration from chaos_uwsgi.ini
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+50.116.5.140 - - [23/May/2015 15:52:50] "GET / HTTP/1.1" 200 -
+50.116.5.140 - - [23/May/2015 15:53:31] "GET / HTTP/1.1" 200 -
+50.116.5.140 - - [23/May/2015 15:58:10] "GET / HTTP/1.1" 200 -
+50.116.5.140 - - [23/May/2015 16:09:25] "GET / HTTP/1.1" 200 -
+50.116.5.140 - - [23/May/2015 16:13:21] "GET / HTTP/1.1" 200 -
+[uWSGI] getting INI configuration from chaos_uwsgi.ini
