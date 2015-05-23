@@ -14,4 +14,8 @@ init_env = '''
 	sudo pup install Flask
 4. create project:
 	https://github.com/tanchao/chaos.trade
+5. install mysql:
+	sudo yum install mysql
+	http://jingyan.baidu.com/article/acf728fd10c3d6f8e510a3ef.html
+	http://www.360doc.com/content/15/0516/11/14900341_470864335.shtml
 '''
