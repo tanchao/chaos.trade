@@ -1,6 +1,7 @@
 *.py[cod]
 
 # logs
+*.log
 log
 log/*
 nohup.out
